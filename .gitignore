@@ -2,3 +2,4 @@
 /vendor
 /config/db.php
 .env
+.vscode
