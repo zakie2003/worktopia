@@ -1,7 +1,40 @@
+
+<?php
+    loadComponent("header");
+?>
+  <body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-3xl font-semibold">
+          <a href="index.html">Workopia</a>
+        </h1>
+        <nav class="space-x-4">
+          <a href="login.html" class="text-white hover:underline">Login</a>
+          <a href="register.html" class="text-white hover:underline">Register</a>
+          <a
+            href="post-job.html"
+            class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded hover:shadow-md transition duration-300"
+            ><i class="fa fa-edit"></i> Post a Job</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- Top Banner -->
+    <section class="bg-blue-900 text-white py-6 text-center">
+      <div class="container mx-auto">
+        <h2 class="text-3xl font-semibold">Unlock Your Career Potential</h2>
+        <p class="text-lg mt-2">
+          Discover the perfect job opportunity for you.
+        </p>
+      </div>
+    </section>
+
     <!-- Job Listings -->
     <section>
       <div class="container mx-auto p-4 mt-4">
-        <div class="text-center text-3xl mb-4 font-bold border border-gray-300 p-3">Recent Jobs</div>
+        <div class="text-center text-3xl mb-4 font-bold border border-gray-300 p-3">All Jobs</div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <!-- Job Listing 1: Software Engineer -->
           <div class="rounded-lg shadow-md bg-white">
@@ -153,6 +186,7 @@
             </div>
           </div>
 
+          <!-- Job Listing 6: Data Scientist -->
           <div class="rounded-lg shadow-md bg-white">
             <div class="p-4">
               <h2 class="text-xl font-semibold">Data Scientist</h2>
@@ -182,8 +216,9 @@
             </div>
           </div>
         </div>
-        <a href="/" class="block text-xl text-center">
-          <i class="fa fa-arrow-alt-circle-right"></i>
-          Show All Jobs
-        </a>
       </section>
+<?php
+    loadComponent("bottom_banner");
+    loadComponent("footer");
+?>
+
