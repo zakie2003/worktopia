@@ -14,20 +14,22 @@
  }
 
 
- function loadComponent($name){
+ function loadComponent($name,$data=[]){
     if(!file_exists(base_path("views/components/$name.php"))){
         echo "File not found in " . base_path("views/components/$name.php");
     }
     else{
+        extract($data);
         require base_path("views/components/$name.php");
     }
  }
 
- function loadView($name){
+ function loadView($name,$data=[]){
     if(!file_exists(base_path("views/$name.php"))){
         echo "File not found in " . base_path("views/$name.php");
     }
     else{
+        extract($data);
         require base_path("views/$name.php");
     }
  }

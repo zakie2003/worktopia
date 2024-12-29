@@ -1,4 +1,8 @@
 <?php
     // require "../helpers.php";
-    loadView("home");
+    $config=require base_path("config/dbconnect.php");
+    $db=new Connection($config);
+    $listings=$db->query("select * from listings;")->fetchAll();
+    // inspect($listing);
+    loadView("home",["listings"=>$listings]);
 ?>

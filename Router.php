@@ -54,7 +54,16 @@ class Router{
         $this->get_method("DELETE",$url,$controller);
    }
 
+   /**
+    * @param int $statusCode
+    * @return void
+    */
 
+    function load_error($statusCode=404){
+        http_response_code($statusCode);
+        loadView("error/$statusCode");
+        exit;
+    }
    
     /**
      * Returns all the routes registered
@@ -68,10 +77,7 @@ class Router{
                return;
            }
        }
-
-       http_response_code(404);
-       loadView("error/404");
-       exit;
+       $this->load_error(404);
    }
 
 
