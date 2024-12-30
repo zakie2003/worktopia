@@ -1,5 +1,9 @@
 <?php
-
+   
+   namespace FrameWork;
+   use PDO;
+   use PDOException;
+   use Exception;
     class Connection{
         public $db;
         public $options=[];
@@ -25,8 +29,11 @@
         }
 
 
-        function query($stmt){
+        function query($stmt,$params=[]){
             try{
+                foreach($params as $key=>$value){
+                    $stmt->bindParam(':'.$key,$value);       
+                }
                 $res=$this->db->prepare($stmt);
                 $res->execute();
                 return $res;

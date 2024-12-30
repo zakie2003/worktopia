@@ -1,5 +1,8 @@
 <?php
 
+namespace FrameWork;
+
+
 class Router{
     protected $routes=[];
 
@@ -73,7 +76,7 @@ class Router{
    public function routes($method,$url){
        foreach($this->routes as $route){
            if($route["method"]==$method && $route["url"]==$url){
-               require(base_path($route["controller"]));
+               require(base_path("App/".$route["controller"]));
                return;
            }
        }

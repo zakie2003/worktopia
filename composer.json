@@ -1,0 +1,16 @@
+{
+    "name":"zakie2003/worktopia",
+    "description":"Workopia",
+    "authors":[
+        {
+            "name":"zakie2003",
+            "email":"zk.khan2003@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4":{
+            "FrameWork\\":"FrameWork/",
+            "App\\":"App/"
+        }
+    }
+}
