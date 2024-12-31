@@ -1,3 +1,0 @@
-<?php
-    loadView("error/error");
-?>

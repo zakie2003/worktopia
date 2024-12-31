@@ -1,25 +1,19 @@
 <?php
 
-    require __DIR__."/../vendor/autoload.php";
+require __DIR__ . "/../vendor/autoload.php";
+require "../helpers.php";
 
-    require "../helpers.php";
-    
-    use FrameWork\Router;
+use FrameWork\Router;
 
-    // spl_autoload_register(function($class){
-    //     $path="FrameWork/".$class.".php";
-    //     if(file_exists(base_path($path))){
-    //         require base_path($path);
-    //     } 
-    // });
-    
-    $url=parse_url($_SERVER["REQUEST_URI"],PHP_URL_PATH);
-    $method=$_SERVER["REQUEST_METHOD"];
+$url = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+$method = $_SERVER["REQUEST_METHOD"];
 
+$router = new Router();
 
-    $router=new Router();
+// Load routes from a separate file
+require base_path("routes.php");
 
-    $route=require base_path("routes.php");
-    $router->routes($method,$url);
+// Dispatch the request
+$router->dispatch($url);
 
 ?>
