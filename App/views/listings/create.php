@@ -14,24 +14,30 @@
         <div class="message bg-green-100 p-3 my-3">
           This is a success message.
         </div> -->
-        <form method="POST">
+        <form method="POST" action="/listing">
           <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">
             Job Info
           </h2>
+          <?php if (isset($errors)) {
+            foreach ($errors as $key => $value) {
+              echo '<div class="message bg-red-100 p-3 my-3">' . $value . '</div>';
+            }
+          }
+          ?>
           <div class="mb-4">
             <input
               type="text"
               name="title"
               placeholder="Job Title"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['title'] ?? ""; ?>"
             />
           </div>
           <div class="mb-4">
             <textarea
               name="description"
               placeholder="Job Description"
-              class="w-full px-4 py-2 border rounded focus:outline-none"
-            ></textarea>
+              class="w-full px-4 py-2 border rounded focus:outline-none"><?=$newListing['description'] ?? ""; ?></textarea>
           </div>
           <div class="mb-4">
             <input
@@ -39,6 +45,7 @@
               name="salary"
               placeholder="Annual Salary"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['salary'] ?? ""; ?>"
             />
           </div>
           <div class="mb-4">
@@ -47,6 +54,7 @@
               name="requirements"
               placeholder="Requirements"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['requirements'] ?? ""; ?>"
             />
           </div>
           <div class="mb-4">
@@ -55,6 +63,7 @@
               name="benefits"
               placeholder="Benefits"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['benefits'] ?? ""; ?>"
             />
           </div>
           <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">
@@ -66,6 +75,7 @@
               name="company"
               placeholder="Company Name"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['company'] ?? ""; ?>"
             />
           </div>
           <div class="mb-4">
@@ -74,6 +84,7 @@
               name="address"
               placeholder="Address"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['address'] ?? ""; ?>"
             />
           </div>
           <div class="mb-4">
@@ -82,6 +93,7 @@
               name="city"
               placeholder="City"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['city'] ?? ""; ?>"
             />
           </div>
           <div class="mb-4">
@@ -90,6 +102,7 @@
               name="state"
               placeholder="State"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['state'] ?? ""; ?>"
             />
           </div>
           <div class="mb-4">
@@ -98,6 +111,7 @@
               name="phone"
               placeholder="Phone"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['phone'] ?? ""; ?>"
             />
           </div>
           <div class="mb-4">
@@ -106,9 +120,10 @@
               name="email"
               placeholder="Email Address For Applications"
               class="w-full px-4 py-2 border rounded focus:outline-none"
+              value="<?=$newListing['email'] ?? ""; ?>"
             />
           </div>
-          <button
+          <button type="submit"
             class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 my-3 rounded focus:outline-none"
           >
             Save

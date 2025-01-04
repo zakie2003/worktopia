@@ -1,6 +1,7 @@
 <?php
     namespace App\Controllers;
     use FrameWork\Connection;
+    use FrameWork\Validation;
 
     class HomeController{
         public $db;
@@ -41,10 +42,40 @@
         }
 
         
+        /**
+         * This function is used to show all the listings on the index page
+         * @return void
+         */
         public function lisiting(){
             $listings=$this->db->query("select * from listings;")->fetchAll();
             // inspect($listing);
             loadView("listings/index",["listings"=>$listings]);
+        }
+
+        public function store(){
+            $allowed=["title","description","salary","requirements","benefits","company","tags","city","state","address","phone","email"];
+            
+            $newListing=array_intersect_key($_POST,array_flip($allowed));
+            $newListing=array_map("sanitize",$newListing);
+            $newListing["user_id"]=1;
+            // inspect($newListing);
+            $required_field=["title","description","city","state","email"];
+            $errors=[];
+            foreach ($required_field as $field) {
+                if(empty($newListing[$field]) || !Validation::string($newListing[$field])){
+                    $errors[$field]= "This $field is required";
+                    // inspect($newListing[$field]);
+                }
+            }
+            if(!empty($errors)){
+                // inspect($newListing);
+                loadView("listings/create",["errors"=>$errors,"newListing"=>$newListing]);
+            }
+            else{
+                $fields=[];
+                foreach($newListing as $key=>$value){
+                    $fields
+            }
         }
     }
 ?>
