@@ -59,7 +59,7 @@
             $newListing=array_map("sanitize",$newListing);
             $newListing["user_id"]=1;
             // inspect($newListing);
-            $required_field=["title","description","city","state","email"];
+            $required_field=["title","description","city","state","email","salary"];
             $errors=[];
             foreach ($required_field as $field) {
                 if(empty($newListing[$field]) || !Validation::string($newListing[$field])){
@@ -73,8 +73,69 @@
             }
             else{
                 $fields=[];
-                foreach($newListing as $key=>$value){
-                    $fields
+                $values=[];
+                foreach($newListing as $field=>$value){
+                    $fields[]=$field;
+                    if($value==""){
+                        $values[]=null;
+                    }
+                    else{
+                        $values[]=":" .$field;
+                    }
+                }
+
+                $fields=implode(",",$fields);
+                $values=implode(",",$values);
+                $query="insert into listings($fields) values($values);";
+                // inspect($query);
+                $this->db->query($query,$newListing);
+                redirect("/listing");
+            }
+        }
+
+
+        public function destroy($param){
+            $id=$param["id"];
+            $params=["id"=>$id];
+            inspect($params);
+            $res=$this->db->query("select * from listings where id=:id;",$params)->fetch();
+            if(!$res){
+                ErrorController::NotFound("Listing not found",404);
+
+                exit();
+            }
+            else{
+                $this->db->query("delete from listings where id=:id;",$params);
+                $_SESSION["success_message"]="Listing deleted successfully";
+                redirect("/listing");
+            }
+        }
+
+        public function edit($param){
+            $id=$param["id"];
+            $params=["id"=>$id];
+            $res=$this->db->query("select * from listings where id =:id",$params)->fetch();
+            if(!$res){
+                ErrorController::NotFound("Listing not found",404);
+                exit();
+            }
+            else{
+                loadView("/listings/edit",["newListing"=>$res]);
+            }
+        }
+
+
+        public function update($param){
+            $id=$param["id"];
+            $params=["id"=>$id];
+            $res=$this->db->query("select * from listings where id =:id",$params)->fetch();
+            if(!$res){
+                ErrorController::NotFound("Listing not found",404);
+                exit();
+            }
+            else{
+                inspect($res);
+
             }
         }
     }

@@ -31,10 +31,13 @@
 
         function query($stmt,$params=[]){
             try{
+                $res = $this->db->prepare($stmt);
+
                 foreach($params as $key=>$value){
-                    $stmt->bindParam(':'.$key,$value);       
+                    $res->bindValue(':'.$key,$value);  
+                    // inspect($value);     
                 }
-                $res=$this->db->prepare($stmt);
+                // inspect($res);
                 $res->execute();
                 return $res;
 

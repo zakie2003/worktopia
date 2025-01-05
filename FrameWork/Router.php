@@ -80,6 +80,9 @@ class Router
     {
         $requestMethod = $_SERVER["REQUEST_METHOD"];
 
+        if($requestMethod == "POST" && isset($_POST["_method"])){
+            $requestMethod = strtoupper($_POST["_method"]);
+        }
         foreach ($this->routes as $route) {
             $routeSegment = explode("/", trim($route["url"], "/"));
             $urlSegment = explode("/", trim($url, "/"));
@@ -112,7 +115,6 @@ class Router
 
                 if (class_exists($controllerClass)) {
                     $controllerInstance = new $controllerClass();
-                    // echo $params;                    
                     if (method_exists($controllerInstance, $controllerMethod)) {
                         // Call the controller method with parameters
                         $controllerInstance->$controllerMethod($params);

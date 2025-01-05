@@ -3,6 +3,8 @@
     $router->get("/listing","HomeController@lisiting");
     $router->get("/listing/create","HomeController@create");
     $router->get("/listing/show/{id}","HomeController@show");
-    
+    $router->get("/listing/edit/{id}","HomeController@edit");
+    $router->post("/listing/update/{id}","HomeController@update");
     $router->post("/listing","HomeController@store");
+    $router->delete("/listing/{id}","HomeController@destroy");
 ?>
