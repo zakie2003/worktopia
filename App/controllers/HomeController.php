@@ -134,8 +134,40 @@
                 exit();
             }
             else{
-                inspect($res);
+                // inspect($res);
+                $allowed=["title","description","salary","requirements","benefits","company","tags","city","state","address","phone","email"];
+                $updated_values=[];
+                $updated_values=array_intersect_key($_POST,array_flip($allowed));
+                $updated_values=array_map("sanitize",$updated_values);
+                $required_field=["title","description","city","state","email","salary"];
+                $errors=[];
+                foreach($required_field as $field){
+                    if(empty($updated_values[$field])|| !Validation::string($updated_values[$field])){
+                        $errors[$field]= "This $field is required";
+                    }
+                }
+                // inspect($errors);
+                if(!empty($errors)){
 
+                    loadView("listings/edit",["errors"=>$errors,"newListing"=>$res]);
+                    exit();
+                }
+                else{
+                    $updated_field=[];
+                    foreach (array_keys($updated_values) as $key) {
+                        
+                        $updated_field[]="$key = :$key";
+
+                    }
+                    // inspect($updated_field);
+                    $updated_field=implode(", ",$updated_field);
+                    inspect($updated_field);
+                    $query="update listings set $updated_field where id=:id;";
+                    $this->db->query($query,array_merge($updated_values,$params));
+                    // inspect(array_merge($updated_values,$params));
+                    $_SESSION["success_update_message"]="Listing updated successfully";
+                    redirect("/listing/show/$id");
+                }
             }
         }
     }

@@ -7,4 +7,8 @@
     $router->post("/listing/update/{id}","HomeController@update");
     $router->post("/listing","HomeController@store");
     $router->delete("/listing/{id}","HomeController@destroy");
+    $router->get("/auth/register","UserController@create");
+    $router->get("/auth/login","UserController@login");
+    $router->post("/auth/login","UserController@login");
+    $router->post("/auth/register","UserController@store");
 ?>
