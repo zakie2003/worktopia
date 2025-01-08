@@ -4,9 +4,9 @@ require __DIR__ . "/../vendor/autoload.php";
 require "../helpers.php";
 
 use FrameWork\Router;
+use FrameWork\Session;
 
-session_start();
-
+Session::start();
 $url = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 $method = $_SERVER["REQUEST_METHOD"];
 

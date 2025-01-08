@@ -7,6 +7,7 @@
     class Connection{
         public $db;
         public $options=[];
+        public $conn;
 
         /**
          * @var $connection

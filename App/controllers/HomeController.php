@@ -2,6 +2,7 @@
     namespace App\Controllers;
     use FrameWork\Connection;
     use FrameWork\Validation;
+    use FrameWork\Session;
 
     class HomeController{
         public $db;
@@ -57,7 +58,7 @@
             
             $newListing=array_intersect_key($_POST,array_flip($allowed));
             $newListing=array_map("sanitize",$newListing);
-            $newListing["user_id"]=1;
+            $newListing["user_id"]=Session::get("user")["user_id"];
             // inspect($newListing);
             $required_field=["title","description","city","state","email","salary"];
             $errors=[];
