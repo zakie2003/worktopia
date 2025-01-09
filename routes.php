@@ -1,16 +1,17 @@
 <?php
     $router->get("/","HomeController@index");
     $router->get("/listing","HomeController@lisiting");
-    $router->get("/listing/create","HomeController@create");
+    $router->get("/listing/create","HomeController@create",["auth"]);
     $router->get("/listing/show/{id}","HomeController@show");
-    $router->get("/listing/edit/{id}","HomeController@edit");
-    $router->post("/listing/update/{id}","HomeController@update");
-    $router->post("/listing","HomeController@store");
-    $router->delete("/listing/{id}","HomeController@destroy");
-    $router->get("/auth/register","UserController@create");
-    $router->get("/auth/login","UserController@login");
-    $router->post("/auth/login","UserController@login");
-    $router->post("/auth/register","UserController@store");
-    $router->post("/auth/logout","UserController@logout");
-    $router->post("/auth/loginn","UserController@authenticate");
+    $router->get("/listing/edit/{id}","HomeController@edit",["auth"]);
+    $router->post("/listing/update/{id}","HomeController@update",["auth"]);
+    $router->post("/listing","HomeController@store",["auth"]);
+    $router->get("/listing/search","HomeController@search");
+    $router->delete("/listing/{id}","HomeController@destroy",["auth"]);
+    $router->get("/auth/register","UserController@create",["guest"]);
+    $router->get("/auth/login","UserController@login",["guest"]);
+    $router->post("/auth/login","UserController@login",["guest"]);
+    $router->post("/auth/register","UserController@store",["guest"]);
+    $router->post("/auth/logout","UserController@logout",["auth"]);
+    $router->post("/auth/loginn","UserController@authenticate",["guest"]);
 ?>

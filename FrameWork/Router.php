@@ -4,6 +4,7 @@ namespace FrameWork;
 
 use App\Controllers\HomeController;
 use App\Controllers\ErrorController;
+use FrameWork\Middleware\Authorize;
 
 class Router
 {
@@ -15,15 +16,17 @@ class Router
      * @param string $method
      * @param string $url
      * @param string $action
+     * @param array $middleware
      */
-    public function addRoute($method, $url, $action)
+    public function addRoute($method, $url, $action, $middleware = [])
     {
         list($controller, $controllerMethod) = explode("@", $action);
         $this->routes[] = [
             "method" => $method,
             "url" => $url,
             "controller" => $controller,
-            "controllerMethod" => $controllerMethod
+            "controllerMethod" => $controllerMethod,
+            "middleware" => $middleware
         ];
     }
 
@@ -32,10 +35,11 @@ class Router
      *
      * @param string $url
      * @param string $controller
+     * @param array $middleware
      */
-    public function get($url, $controller)
+    public function get($url, $controller, $middleware = [])
     {
-        $this->addRoute("GET", $url, $controller);
+        $this->addRoute("GET", $url, $controller, $middleware);
     }
 
     /**
@@ -44,9 +48,9 @@ class Router
      * @param string $url
      * @param string $controller
      */
-    public function post($url, $controller)
+    public function post($url, $controller,$middleware = [])
     {
-        $this->addRoute("POST", $url, $controller);
+        $this->addRoute("POST", $url, $controller, $middleware);
     }
 
     /**
@@ -55,9 +59,9 @@ class Router
      * @param string $url
      * @param string $controller
      */
-    public function put($url, $controller)
+    public function put($url, $controller, $middleware = [])
     {
-        $this->addRoute("PUT", $url, $controller);
+        $this->addRoute("PUT", $url, $controller,$middleware);
     }
 
     /**
@@ -66,9 +70,9 @@ class Router
      * @param string $url
      * @param string $controller
      */
-    public function delete($url, $controller)
+    public function delete($url, $controller, $middleware = []) 
     {
-        $this->addRoute("DELETE", $url, $controller);
+        $this->addRoute("DELETE", $url, $controller, $middleware);
     }
 
     /**
@@ -110,6 +114,11 @@ class Router
 
             // If a match is found
             if ($match) {
+
+                foreach ($route["middleware"] as $role) {
+                    (new Authorize())->handle($role);
+                }
+
                 $controllerClass = 'App\\Controllers\\' . $route["controller"];
                 $controllerMethod = $route["controllerMethod"];
 

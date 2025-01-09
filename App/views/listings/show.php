@@ -1,4 +1,5 @@
 <?php
+    use FrameWork\Session;
     loadComponent("header");
 ?>
 
@@ -17,6 +18,9 @@
         <i class="fa fa-arrow-alt-circle-left"></i>
         Back To Listings
       </a>
+      <?php
+        if(Session::check("user") && Session::get("user")["user_id"] == $listing["user_id"]){
+      ?>
       <div class="flex space-x-4 ml-4">
         <a href="/listing/edit/<?=$listing["id"]?>" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
         <!-- Delete Form -->
@@ -26,6 +30,9 @@
         </form>
         <!-- End Delete Form -->
       </div>
+      <?php
+        }
+      ?>
     </div>
         <div class="p-4">
           <h2 class="text-xl font-semibold"><?= $listing['title'] ?></h2>

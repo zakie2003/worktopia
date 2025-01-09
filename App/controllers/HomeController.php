@@ -3,6 +3,7 @@
     use FrameWork\Connection;
     use FrameWork\Validation;
     use FrameWork\Session;
+    use FrameWork\Authorization;
 
     class HomeController{
         public $db;
@@ -19,7 +20,7 @@
          * @return void
          */
         public function index(){
-            $listings=$this->db->query("select * from listings;")->fetchAll();
+            $listings=$this->db->query("select * from listings order by created_at desc limit 2;")->fetchAll();
             // inspect($listing);
             loadView("home",["listings"=>$listings]);
         }
@@ -48,7 +49,7 @@
          * @return void
          */
         public function lisiting(){
-            $listings=$this->db->query("select * from listings;")->fetchAll();
+            $listings=$this->db->query("select * from listings order by created_at desc;")->fetchAll();
             // inspect($listing);
             loadView("listings/index",["listings"=>$listings]);
         }
@@ -96,18 +97,19 @@
 
 
         public function destroy($param){
-            $id=$param["id"];
-            $params=["id"=>$id];
-            inspect($params);
-            $res=$this->db->query("select * from listings where id=:id;",$params)->fetch();
-            if(!$res){
-                ErrorController::NotFound("Listing not found",404);
-
+            $id = $param["id"];
+            $params = ["id" => $id];
+            $res = $this->db->query("select * from listings where id=:id;", $params)->fetch();
+            if (!$res) {
+                ErrorController::NotFound("Listing not found", 404);
                 exit();
-            }
-            else{
-                $this->db->query("delete from listings where id=:id;",$params);
-                $_SESSION["success_message"]="Listing deleted successfully";
+            } else {
+                if (!Authorization::isOwner($res["user_id"])) {
+                    Session::setflash("error_message", "You are not authorized to delete this listing");
+                    return redirect("/listing/show/$id");
+                }
+                $this->db->query("delete from listings where id=:id;", $params);
+                Session::setflash("success_message", "Listing deleted successfully");
                 redirect("/listing");
             }
         }
@@ -121,6 +123,10 @@
                 exit();
             }
             else{
+                if(!Authorization::isOwner($res["user_id"])){
+                    Session::setflash("error_message","You are not authorized to update this listing");
+                    return redirect("/listing/show/$id");
+                }
                 loadView("/listings/edit",["newListing"=>$res]);
             }
         }
@@ -135,6 +141,10 @@
                 exit();
             }
             else{
+                if(!Authorization::isOwner($res["user_id"])){
+                    Session::setflash("error_message","You are not authorized to update this listing");
+                    return redirect("/listing/show/$id");
+                }
                 // inspect($res);
                 $allowed=["title","description","salary","requirements","benefits","company","tags","city","state","address","phone","email"];
                 $updated_values=[];
@@ -162,14 +172,29 @@
                     }
                     // inspect($updated_field);
                     $updated_field=implode(", ",$updated_field);
-                    inspect($updated_field);
+                    // inspect($updated_field);
                     $query="update listings set $updated_field where id=:id;";
                     $this->db->query($query,array_merge($updated_values,$params));
                     // inspect(array_merge($updated_values,$params));
-                    $_SESSION["success_update_message"]="Listing updated successfully";
+                    Session::setflash("success_message","Listing updated successfully");
                     redirect("/listing/show/$id");
                 }
             }
+        }
+
+
+/**
+ * This method handles search functionality for listings.
+ *
+ * @param array $param The parameters for search, including potential filters like keywords and location.
+ * @return void
+ */
+
+        public function search($param){
+            $keyword=isset($_GET["keywords"])?trim($_GET["keywords"]):"";
+            $location=isset($_GET["location"])?trim($_GET["location"]):"";
+            $listings=$this->db->query("select * from listings where title like :keyword or description like :keyword or company like :keyword or tags like :keyword and (city like :location or state like :location);",["keyword"=>"%$keyword%","location"=>"%$location%"])->fetchAll();
+            loadView("listings/index",["listings"=>$listings]);
         }
     }
 ?>
